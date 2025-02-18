@@ -1,0 +1,228 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Example: Running the Hypergeometric Test &mdash; FOX 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)" href="hdWGCNA_integ.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            FOX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="FOX.html">FOX package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdWGCNA_integ.html">R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python Example: Running the Hypergeometric Test</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#helper-functions">Helper Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-example">Usage Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#explanation-of-functions">Explanation of Functions</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FOX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Python Example: Running the Hypergeometric Test</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="python-example-running-the-hypergeometric-test">
+<h1>Python Example: Running the Hypergeometric Test<a class="headerlink" href="#python-example-running-the-hypergeometric-test" title="Link to this heading"></a></h1>
+<p>FOX requires two inputs: The AUC matrix provided by AUCell and the RSS matrix calculated by SCENIC.
+The functions <cite>returnThreshold_dictionary</cite> and <cite>rundifferential_test_AUC</cite> explain how we test for the expression of regulons.</p>
+<section id="helper-functions">
+<h2>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading"></a></h2>
+<p>First, we define the essential helper functions needed to conduct differential testing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">returnThreshold_dictionary</span><span class="p">(</span><span class="n">threshold_file</span><span class="p">,</span> <span class="n">regulonC</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dictionary of thresholds based on the input threshold file.</span>
+<span class="sd">    The file is processed depending on whether it&#39;s a 3.5 format or not.</span>
+
+<span class="sd">    :param threshold_file: Path to the file containing threshold data.</span>
+<span class="sd">    :param regulonC: The column/row of the regulon to use.</span>
+<span class="sd">    :return: A dictionary mapping regulon names to threshold values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">thresholds</span><span class="p">,</span> <span class="n">regulonNames</span><span class="p">,</span> <span class="n">regulonThresholds</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># Handle case where threshold_file is in 3.5 format</span>
+    <span class="k">if</span> <span class="s2">&quot;3.5_&quot;</span> <span class="ow">in</span> <span class="n">threshold_file</span><span class="p">:</span>
+        <span class="n">thresholds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">threshold_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">regulonNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">thresholds</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;regulon&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+        <span class="n">regulonThresholds</span> <span class="o">=</span> <span class="n">thresholds</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">regulonC</span><span class="p">]</span>  <span class="c1"># Row-based threshold extraction</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">thresholds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">threshold_file</span><span class="p">)</span>
+        <span class="n">regulonNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">regulonC</span><span class="p">]))</span>
+        <span class="n">regulonThreshold</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">regulonC</span><span class="p">]</span>  <span class="c1"># Column-based threshold extraction</span>
+
+    <span class="n">threshold_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">regulonNames</span><span class="p">)):</span>
+        <span class="n">threshold_dict</span><span class="p">[</span><span class="n">regulonNames</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">regulonThresholds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">threshold_dict</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">rundifferential_test_AUC</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metaClusterLabel</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">treatment</span><span class="p">,</span> <span class="n">regulon_name</span><span class="p">,</span> <span class="n">threshold_file</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.05</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function performs a hypergeometric test on the differential expression of regulons</span>
+<span class="sd">    between control and treatment groups.</span>
+
+<span class="sd">    :param df: DataFrame containing the AUC values for all cells.</span>
+<span class="sd">    :param metaClusterLabel: Label for the meta-cluster (e.g., cell type or sample group).</span>
+<span class="sd">    :param control: Label for the control group.</span>
+<span class="sd">    :param treatment: Label for the treatment group.</span>
+<span class="sd">    :param regulon_name: The name of the regulon being tested.</span>
+<span class="sd">    :param threshold_file: Path to the file containing thresholds for regulons.</span>
+<span class="sd">    :param alpha: The significance level for testing.</span>
+
+<span class="sd">    :return: Tuple containing the regulon name and p-values for both control and treatment groups.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>  <span class="c1"># Clean up column names</span>
+
+    <span class="k">if</span> <span class="n">threshold_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">calculate_mean</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">regulon_name</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_successful_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regulon_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">regulon_name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">df</span><span class="p">[</span><span class="n">regulon_name</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">threshold</span> <span class="o">=</span> <span class="n">returnThreshold_dictionary</span><span class="p">(</span><span class="n">threshold_file</span><span class="p">,</span> <span class="s1">&#39;threshold&#39;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_successful_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regulon_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">regulon_name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">[</span><span class="n">regulon_name</span><span class="p">]</span>
+
+    <span class="c1"># Count successful control cells</span>
+    <span class="n">control_successful_cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">metaClusterLabel</span><span class="p">]</span> <span class="o">==</span> <span class="n">control</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_successful_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regulon_name</span><span class="p">)])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Count successful treatment cells</span>
+    <span class="n">treatment_successful_cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">metaClusterLabel</span><span class="p">]</span> <span class="o">==</span> <span class="n">treatment</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_successful_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regulon_name</span><span class="p">)])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">total_successful_cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_successful_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regulon_name</span><span class="p">)]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Total population size</span>
+    <span class="n">total_population</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">metaClusterLabel</span><span class="p">]</span> <span class="o">==</span> <span class="n">control</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">metaClusterLabel</span><span class="p">]</span> <span class="o">==</span> <span class="n">treatment</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Calculate p-values using the hypergeometric distribution</span>
+    <span class="n">p_value_1</span> <span class="o">=</span> <span class="n">hypergeom</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">control_successful_cells</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">total_population</span><span class="p">,</span> <span class="n">total_successful_cells</span><span class="p">,</span> <span class="n">n_1</span><span class="p">)</span>
+    <span class="n">p_value_2</span> <span class="o">=</span> <span class="n">hypergeom</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">treatment_successful_cells</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">total_population</span><span class="p">,</span> <span class="n">total_successful_cells</span><span class="p">,</span> <span class="n">n_2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">regulon_name</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">p_value_1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">p_value_2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="usage-example">
+<h2>Usage Example<a class="headerlink" href="#usage-example" title="Link to this heading"></a></h2>
+<p>To run FOX, you’ll need to prepare your data (such as RSS matrices and metadata) and pass it to the class. Here’s an example of how to initialize and use FOX:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;QA_QC_PBMC_rss_values_Feb3.csv&quot;</span><span class="p">)</span>  <span class="c1"># RSS values</span>
+<span class="n">df_RAS</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;obj_AUC_metadata2_PBMC.csv&quot;</span><span class="p">)</span>  <span class="c1"># AUC metadata</span>
+
+<span class="c1"># Define labels for your comparison</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># Initialize the ComparisonTree with your data</span>
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">ComparisonTree</span><span class="p">(</span>
+    <span class="s2">&quot;Naive CD4 T&quot;</span><span class="p">,</span> <span class="n">df_RAS</span><span class="p">,</span> <span class="s2">&quot;newLabels&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="s2">&quot;Unnamed: 0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;3.5_AUCellThresholds_Info_PVMC_QA_QC.tsv&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Build the tree and run analyses</span>
+<span class="n">comparison</span><span class="o">.</span><span class="n">construct_tree</span><span class="p">()</span>
+<span class="n">p_vals</span> <span class="o">=</span> <span class="n">comparison</span><span class="o">.</span><span class="n">plotRSS_NMF</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">drawQuadrants</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_pvals</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">comparison</span><span class="o">.</span><span class="n">plot_3dEmbedding</span><span class="p">(</span><span class="n">rawRSS</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">comparison</span><span class="o">.</span><span class="n">analyze_factors</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">percentages</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">comparison</span><span class="o">.</span><span class="n">compareLayers</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;Naive CD4 T&quot;</span><span class="p">,</span> <span class="mf">0.055</span><span class="p">)</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">comparison</span><span class="o">.</span><span class="n">create_global_tree</span><span class="p">()</span>
+<span class="n">tree</span><span class="p">,</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">tr</span>
+</pre></div>
+</div>
+</section>
+<section id="explanation-of-functions">
+<h2>Explanation of Functions<a class="headerlink" href="#explanation-of-functions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>returnThreshold_dictionary</strong>: This function parses the threshold file and returns a dictionary that maps regulon names to threshold values. It handles different file formats.</p></li>
+<li><p><strong>rundifferential_test_AUC</strong>: This function runs a differential test on regulon activity between control and treatment groups, using the hypergeometric distribution to compute the statistical significance of observed differences.</p></li>
+</ul>
+<p>—</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hdWGCNA_integ.html" class="btn btn-neutral float-left" title="R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Moses Apostol.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
