@@ -76,4 +76,4 @@ Contributions are welcome! Feel free to fork the repository and submit pull requ
 
 ---
 
-Let me know if you need further customization or changes! Email: maposotl@unmc.edu
+Let me know if you need further customization or changes! Email: mapostol@unmc.edu
