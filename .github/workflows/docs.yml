@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v1
@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip3 install -r sphinx-rtd-theme # Install any other dependencies you need
+          pip install sphinx-rtd-theme # Install any other dependencies you need
 
       - name: Build the documentation
         run: |
