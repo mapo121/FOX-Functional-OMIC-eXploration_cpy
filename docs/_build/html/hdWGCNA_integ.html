@@ -45,7 +45,15 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="FOX.html">FOX package</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-define-calcrss-function">Step 1: Define <cite>calcRSS</cite> Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-internal-functions-for-jsd-and-rss-calculation">Step 2: Internal Functions for JSD and RSS Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-create-gene-sets-for-each-module">Step 3: Create Gene Sets for Each Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-4-calculate-auc-and-assign-thresholds">Step 4: Calculate AUC and Assign Thresholds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-5-plug-into-fox">Step 5: Plug into FOX.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Python Example: Running the Hypergeometric Test</a></li>
 </ul>
 
@@ -77,9 +85,63 @@
 <h1>R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)<a class="headerlink" href="#r-code-example-gene-set-analysis-and-binarization-hdwgcna-integration" title="Link to this heading"></a></h1>
 <p>This section demonstrates how to perform gene set analysis using R, binarize clusters, and compute Jensen-Shannon Divergence (JSD) for comparing modules and clusters in gene expression data.</p>
 <p>hub_df was generated from following the tutorial here: <a class="reference external" href="https://smorabit.github.io/hdWGCNA/articles/basic_tutorial.html">hdWGCNA</a>. Scroll down to section called “Getting the module assignment table”.</p>
-<p>Step 1: Create Gene Sets for Each Module</p>
-<p>First, we group the data by modules and create gene sets for each module.</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># module is your regulon</span>
+<p>You need to download AUCell, dplyr, and BiocParallel.</p>
+<section id="step-1-define-calcrss-function">
+<h2>Step 1: Define <cite>calcRSS</cite> Function<a class="headerlink" href="#step-1-define-calcrss-function" title="Link to this heading"></a></h2>
+<p>First, we define the <cite>calcRSS</cite> function to calculate the Regulon Specificity Score (RSS) for each cell type. This was taken straight from the code from SCENIC documentation.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">calcRSS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">AUC</span><span class="p">,</span><span class="w"> </span><span class="n">cellAnnotation</span><span class="p">,</span><span class="w"> </span><span class="n">cellTypes</span><span class="o">=</span><span class="kc">NULL</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="kr">if</span><span class="p">(</span><span class="nf">any</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">cellAnnotation</span><span class="p">)))</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="s">&quot;NAs in annotation&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">if</span><span class="p">(</span><span class="nf">any</span><span class="p">(</span><span class="nf">class</span><span class="p">(</span><span class="n">AUC</span><span class="p">)</span><span class="o">==</span><span class="s">&quot;aucellResults&quot;</span><span class="p">))</span><span class="w"> </span><span class="n">AUC</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">getAUC</span><span class="p">(</span><span class="n">AUC</span><span class="p">)</span>
+<span class="w">  </span><span class="n">normAUC</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">AUC</span><span class="o">/</span><span class="nf">rowSums</span><span class="p">(</span><span class="n">AUC</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">if</span><span class="p">(</span><span class="nf">is.null</span><span class="p">(</span><span class="n">cellTypes</span><span class="p">))</span><span class="w"> </span><span class="n">cellTypes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">cellAnnotation</span><span class="p">)</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="n">ctapply</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lapply</span>
+<span class="w">  </span><span class="kr">if</span><span class="p">(</span><span class="nf">require</span><span class="p">(</span><span class="s">&#39;BiocParallel&#39;</span><span class="p">))</span><span class="w"> </span><span class="n">ctapply</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">bplapply</span>
+
+<span class="w">  </span><span class="n">rss</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ctapply</span><span class="p">(</span><span class="n">cellTypes</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">thisType</span><span class="p">)</span>
+<span class="w">    </span><span class="nf">sapply</span><span class="p">(</span><span class="nf">rownames</span><span class="p">(</span><span class="n">normAUC</span><span class="p">),</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">thisRegulon</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="n">pRegulon</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">normAUC</span><span class="p">[</span><span class="n">thisRegulon</span><span class="p">,]</span>
+<span class="w">      </span><span class="n">pCellType</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">cellAnnotation</span><span class="o">==</span><span class="n">thisType</span><span class="p">)</span>
+<span class="w">      </span><span class="n">pCellType</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pCellType</span><span class="o">/</span><span class="nf">sum</span><span class="p">(</span><span class="n">pCellType</span><span class="p">)</span>
+<span class="w">      </span><span class="nf">.calcRSS.oneRegulon</span><span class="p">(</span><span class="n">pRegulon</span><span class="p">,</span><span class="w"> </span><span class="n">pCellType</span><span class="p">)</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">)</span>
+<span class="w">  </span><span class="n">rss</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">do.call</span><span class="p">(</span><span class="n">cbind</span><span class="p">,</span><span class="w"> </span><span class="n">rss</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">colnames</span><span class="p">(</span><span class="n">rss</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cellTypes</span>
+<span class="w">  </span><span class="kr">return</span><span class="p">(</span><span class="n">rss</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-internal-functions-for-jsd-and-rss-calculation">
+<h2>Step 2: Internal Functions for JSD and RSS Calculation<a class="headerlink" href="#step-2-internal-functions-for-jsd-and-rss-calculation" title="Link to this heading"></a></h2>
+<p>We define the internal functions for calculating Jensen-Shannon Divergence (JSD) and the Regulon Specificity Score (RSS).</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">.H</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">pVect</span><span class="p">){</span>
+<span class="w">  </span><span class="n">pVect</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pVect</span><span class="p">[</span><span class="n">pVect</span><span class="o">&gt;</span><span class="m">0</span><span class="p">]</span><span class="w"> </span><span class="c1"># /sum(pVect) ??</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">pVect</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">log2</span><span class="p">(</span><span class="n">pVect</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="c1"># Jensen-Shannon Divergence (JSD)</span>
+<span class="n">calcJSD</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">pRegulon</span><span class="p">,</span><span class="w"> </span><span class="n">pCellType</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="p">(</span><span class="nf">.H</span><span class="p">((</span><span class="n">pRegulon</span><span class="o">+</span><span class="n">pCellType</span><span class="p">)</span><span class="o">/</span><span class="m">2</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">((</span><span class="nf">.H</span><span class="p">(</span><span class="n">pRegulon</span><span class="p">)</span><span class="m">+.</span><span class="nf">H</span><span class="p">(</span><span class="n">pCellType</span><span class="p">))</span><span class="o">/</span><span class="m">2</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># Regulon specificity score (RSS)</span>
+<span class="n">.calcRSS.oneRegulon</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">pRegulon</span><span class="p">,</span><span class="w"> </span><span class="n">pCellType</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">jsd</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">calcJSD</span><span class="p">(</span><span class="n">pRegulon</span><span class="p">,</span><span class="w"> </span><span class="n">pCellType</span><span class="p">)</span>
+<span class="w">  </span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">jsd</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-create-gene-sets-for-each-module">
+<h2>Step 3: Create Gene Sets for Each Module<a class="headerlink" href="#step-3-create-gene-sets-for-each-module" title="Link to this heading"></a></h2>
+<p>We now create gene sets for each module (regulon) from the hub data frame.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># module is your regulon (preprocessing!)</span>
 <span class="n">df_grouped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hub_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">group_by</span><span class="p">(</span><span class="n">module</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">summarize</span><span class="p">(</span><span class="n">genes_in_module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">gene_name</span><span class="p">),</span><span class="w"> </span><span class="n">.groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;drop&quot;</span><span class="p">)</span>
 
 <span class="c1"># Create gene sets for each module</span>
@@ -90,69 +152,56 @@
 <span class="c1"># View the result</span>
 <span class="nf">print</span><span class="p">(</span><span class="n">all.sets</span><span class="p">)</span>
 <span class="n">all.sets</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">GeneSetCollection</span><span class="p">(</span><span class="n">all.sets</span><span class="p">)</span>
+<span class="n">exprMatrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seurat_obj</span><span class="p">[[</span><span class="s">&quot;RNA&quot;</span><span class="p">]]</span><span class="o">$</span><span class="n">counts</span>
 </pre></div>
 </div>
-<p>Step 2: Prepare Expression Matrix
-Next, we extract the expression matrix from a Seurat object, which contains gene expression data.</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">exprMatrx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seurat_obj</span><span class="p">[[</span><span class="s">&quot;RNA&quot;</span><span class="p">]]</span><span class="o">$</span><span class="n">counts</span>
-</pre></div>
-</div>
-<p>Step 3: Calculate AUC and Assign Thresholds
-Using the <cite>AUCell</cite> package, we calculate the Area Under the Curve (AUC) for the gene sets and explore the thresholds.</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">cells_AUC</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AUCell_calcAUC</span><span class="p">(</span><span class="n">geneSets</span><span class="p">,</span><span class="w"> </span><span class="n">cells_rankings</span><span class="p">)</span>
+</section>
+<section id="step-4-calculate-auc-and-assign-thresholds">
+<h2>Step 4: Calculate AUC and Assign Thresholds<a class="headerlink" href="#step-4-calculate-auc-and-assign-thresholds" title="Link to this heading"></a></h2>
+<p>We calculate the Area Under the Curve (AUC) for the gene sets and explore the thresholds using the <cite>AUCell</cite> package.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">cells_rankings</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AUCell_buildRankings</span><span class="p">(</span><span class="n">exprMatrix</span><span class="p">,</span><span class="w"> </span><span class="n">plotStats</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+
+<span class="n">cells_AUC</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AUCell_calcAUC</span><span class="p">(</span><span class="n">all.sets</span><span class="p">,</span><span class="w"> </span><span class="n">cells_rankings</span><span class="p">)</span>
 <span class="n">cells_assignment</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AUCell_exploreThresholds</span><span class="p">(</span><span class="n">cells_AUC</span><span class="p">,</span><span class="w"> </span><span class="n">plotHist</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">nCores</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">assign</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">cellInfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">seuratCluster</span><span class="o">=</span><span class="nf">Idents</span><span class="p">(</span><span class="n">seurat_obj</span><span class="p">))</span>
+<span class="n">rss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">calcRSS</span><span class="p">(</span><span class="n">AUC</span><span class="o">=</span><span class="nf">getAUC</span><span class="p">(</span><span class="n">cells_AUC</span><span class="p">),</span><span class="w"> </span><span class="n">cellAnnotation</span><span class="o">=</span><span class="n">cellInfo</span><span class="p">[</span><span class="nf">colnames</span><span class="p">(</span><span class="n">cells_AUC</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;seuratCluster&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Step 4: Binarize Clusters Based on Conditions
-We binarize clusters in the Seurat object based on cell type or condition.</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loop through each cell type to binarize clusters (remember, pick your column)</span>
-<span class="n">binarize_clusters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lapply</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">seurat_obj</span><span class="o">@</span><span class="n">meta.data</span><span class="o">$</span><span class="n">cell_type</span><span class="p">)),</span>
-<span class="w">    </span><span class="kr">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">cluster</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="n">seurat_obj</span><span class="o">@</span><span class="n">meta.data</span><span class="o">$</span><span class="n">cell_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">)</span>
-<span class="w">        </span><span class="kr">return</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
-<span class="p">})</span>
-<span class="nf">names</span><span class="p">(</span><span class="n">binarize_clusters</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">seurat_obj</span><span class="o">@</span><span class="n">meta.data</span><span class="o">$</span><span class="n">cell_type</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Step 5: Binarize Regulons Based on AUC Thresholds
-Now, we binarize the regulons (gene modules) based on their AUC values and the selected thresholds.</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">binarize_regulons</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lapply</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="nf">rownames</span><span class="p">(</span><span class="n">cells_AUC</span><span class="p">)),</span>
-<span class="w">    </span><span class="kr">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">threshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.double</span><span class="p">(</span><span class="n">cells_assignment</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">$</span><span class="n">aucThr</span><span class="o">$</span><span class="n">selected</span><span class="p">)</span>
-<span class="w">        </span><span class="n">b_values</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="n">cells_AUC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">threshold</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">)</span>
-<span class="w">        </span><span class="kr">return</span><span class="p">(</span><span class="n">b_values</span><span class="p">)</span>
-<span class="p">})</span>
-<span class="nf">names</span><span class="p">(</span><span class="n">binarize_regulons</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">cells_AUC</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Step 6: Compute Jensen-Shannon Divergence (JSD)
-Finally, we compute the Jensen-Shannon Divergence between the binarized clusters and regulons using the <a class="reference external" href="https://cran.r-project.org/web/packages/philentropy/index.html">philentropy</a> package.</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nf">library</span><span class="p">(</span><span class="n">philentropy</span><span class="p">)</span>
+</section>
+<section id="step-5-plug-into-fox">
+<h2>Step 5: Plug into FOX.<a class="headerlink" href="#step-5-plug-into-fox" title="Link to this heading"></a></h2>
+<p>Take the cells_AUC and rss and export them to .csv files. Then plug them into FOX with your desired cluster names.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">InputForFOX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">obj</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">cells_AUC</span><span class="p">,</span><span class="w"> </span><span class="n">rss</span><span class="p">,</span><span class="w"> </span><span class="n">cells_assignment</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">a</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nf">S4ToList</span><span class="p">(</span><span class="n">cells_AUC</span><span class="p">)</span>
+<span class="w">  </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="o">$</span><span class="n">assays</span><span class="o">$</span><span class="n">data</span><span class="o">$</span><span class="n">listData</span><span class="o">$</span><span class="n">AUC</span>
+<span class="w">  </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="o">!</span><span class="nf">grepl</span><span class="p">(</span><span class="s">&quot;extended&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span><span class="w"> </span><span class="p">]</span>
+<span class="w">  </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="w">  </span><span class="n">obj</span><span class="o">@</span><span class="n">meta.data</span><span class="w"> </span><span class="o">=</span><span class="nf">cbind</span><span class="p">(</span><span class="n">obj</span><span class="o">@</span><span class="n">meta.data</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">write.csv</span><span class="p">(</span><span class="n">obj</span><span class="o">@</span><span class="n">meta.data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;RAS_matrix_foxInput.csv&quot;</span><span class="p">)</span>
 
-<span class="w"> </span><span class="c1"># Initialize a matrix to store the JSD values</span>
-<span class="w"> </span><span class="n">jsd_matrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">binarize_clusters</span><span class="p">),</span><span class="w"> </span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">binarize_regulons</span><span class="p">))</span>
+<span class="w">  </span><span class="n">rss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rss</span><span class="p">[</span><span class="o">!</span><span class="nf">grepl</span><span class="p">(</span><span class="s">&quot;extended&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">rss</span><span class="p">)),</span><span class="w"> </span><span class="p">]</span>
+<span class="w">  </span><span class="nf">write.csv</span><span class="p">(</span><span class="n">rss</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rss_FOX-input.csv&quot;</span><span class="p">)</span>
 
-<span class="w"> </span><span class="c1"># Set row and column names of the matrix</span>
-<span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">jsd_matrix</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">binarize_clusters</span><span class="p">)</span>
-<span class="w"> </span><span class="nf">colnames</span><span class="p">(</span><span class="n">jsd_matrix</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">binarize_regulons</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="nf">rownames</span><span class="p">(</span><span class="n">cells_AUC</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">threshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.double</span><span class="p">(</span><span class="n">cells_assignment</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">$</span><span class="n">aucThr</span><span class="o">$</span><span class="n">selected</span><span class="p">)</span>
+<span class="w">    </span><span class="n">nCells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cells_assignment</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">$</span><span class="n">aucThr</span><span class="o">$</span><span class="n">thresholds</span><span class="p">[</span><span class="s">&quot;minimumDens&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;nCells&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="n">threshold_table</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rbind</span><span class="p">(</span><span class="n">threshold_table</span><span class="p">,</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">regulon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">threshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">threshold</span><span class="p">,</span><span class="w">        </span><span class="n">nCellsAssigned</span><span class="w"> </span><span class="o">=</span><span class="n">nCells</span><span class="w"> </span><span class="p">))</span>
+<span class="w">  </span><span class="p">}</span>
 
-<span class="w"> </span><span class="c1"># Loop through each combination of binarize_clusters and binarize_regulons</span>
-<span class="w"> </span><span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">binarize_clusters</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i2</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">binarize_regulons</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">     </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">binarize_clusters</span><span class="p">[[</span><span class="n">i</span><span class="p">]])</span><span class="w">  </span><span class="c1"># Length of the current vector</span>
-<span class="w">     </span><span class="n">x_count</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rbind</span><span class="p">(</span><span class="n">binarize_clusters</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nf">as.double</span><span class="p">(</span><span class="n">binarize_regulons</span><span class="p">[[</span><span class="n">i2</span><span class="p">]])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w">  </span><span class="c1"># Normalize the vectors</span>
-<span class="w">     </span><span class="n">jsd_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i2</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="nf">JSD</span><span class="p">(</span><span class="n">x_count</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;log2&quot;</span><span class="p">))</span>
-<span class="w">   </span><span class="p">}</span>
-<span class="w"> </span><span class="p">}</span>
-<span class="nf">write.csv</span><span class="p">(</span><span class="n">jsd_matrix</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;RSS_scores.csv&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="c1"># Export the threshold_table to a .tsv file</span>
+<span class="w">  </span><span class="nf">write.table</span><span class="p">(</span><span class="n">threshold_table</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3.5_AUCell-thresholds.tsv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">quote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+
+
+<span class="p">}</span>
+
+<span class="nf">InputForFOX</span><span class="p">(</span><span class="n">seurat_obj</span><span class="p">,</span><span class="w"> </span><span class="n">cells_AUC</span><span class="p">,</span><span class="w"> </span><span class="n">rss</span><span class="p">,</span><span class="w"> </span><span class="n">cells_assignment</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Step 7: Plug into FOX.</p>
-<p>Take the cells_AUC and jsd_matrix and export them to .csv files. Then plug them into FOX with your desired cluster names.</p>
-<blockquote>
-<div><p>Conclusion</p>
-</div></blockquote>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
 <p>This analysis demonstrates the process of binarizing clusters and regulons, followed by computing Jensen-Shannon Divergence to compare gene sets. These steps are useful for understanding the relationships between gene modules and cell clusters, especially in single-cell RNA-seq data. This can be applied to a variety of different gene network libraries.</p>
+</section>
 </section>
 
 

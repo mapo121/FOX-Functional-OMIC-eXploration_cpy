@@ -5,14 +5,72 @@ This section demonstrates how to perform gene set analysis using R, binarize clu
 
 hub_df was generated from following the tutorial here: `hdWGCNA <https://smorabit.github.io/hdWGCNA/articles/basic_tutorial.html>`_. Scroll down to section called "Getting the module assignment table".
 
+You need to download AUCell, dplyr, and BiocParallel.
 
-Step 1: Create Gene Sets for Each Module
+Step 1: Define `calcRSS` Function
+---------------------------------
 
-First, we group the data by modules and create gene sets for each module.
+First, we define the `calcRSS` function to calculate the Regulon Specificity Score (RSS) for each cell type. This was taken straight from the code from SCENIC documentation.
 
 .. code-block:: r
 
-    # module is your regulon
+    calcRSS <- function(AUC, cellAnnotation, cellTypes=NULL)
+    {
+      if(any(is.na(cellAnnotation))) stop("NAs in annotation")
+      if(any(class(AUC)=="aucellResults")) AUC <- getAUC(AUC)
+      normAUC <- AUC/rowSums(AUC)
+      if(is.null(cellTypes)) cellTypes <- unique(cellAnnotation)
+      # 
+      ctapply <- lapply
+      if(require('BiocParallel')) ctapply <- bplapply
+
+      rss <- ctapply(cellTypes, function(thisType)
+        sapply(rownames(normAUC), function(thisRegulon)
+        {
+          pRegulon <- normAUC[thisRegulon,]
+          pCellType <- as.numeric(cellAnnotation==thisType)
+          pCellType <- pCellType/sum(pCellType)
+          .calcRSS.oneRegulon(pRegulon, pCellType)
+        })
+      )
+      rss <- do.call(cbind, rss)
+      colnames(rss) <- cellTypes
+      return(rss)
+    }
+
+Step 2: Internal Functions for JSD and RSS Calculation
+------------------------------------------------------
+
+We define the internal functions for calculating Jensen-Shannon Divergence (JSD) and the Regulon Specificity Score (RSS).
+
+.. code-block:: r
+
+    .H <- function(pVect){
+      pVect <- pVect[pVect>0] # /sum(pVect) ??
+      - sum(pVect * log2(pVect))
+    }
+
+    # Jensen-Shannon Divergence (JSD)
+    calcJSD <- function(pRegulon, pCellType)
+    {
+      (.H((pRegulon+pCellType)/2)) - ((.H(pRegulon)+.H(pCellType))/2)
+    }
+
+    # Regulon specificity score (RSS)
+    .calcRSS.oneRegulon <- function(pRegulon, pCellType)
+    {
+      jsd <- calcJSD(pRegulon, pCellType)
+      1 - sqrt(jsd)
+    }
+
+Step 3: Create Gene Sets for Each Module
+----------------------------------------
+
+We now create gene sets for each module (regulon) from the hub data frame.
+
+.. code-block:: r
+
+    # module is your regulon (preprocessing!)
     df_grouped = hub_df %>% group_by(module) %>% summarize(genes_in_module = list(gene_name), .groups = "drop")
 
     # Create gene sets for each module
@@ -23,80 +81,61 @@ First, we group the data by modules and create gene sets for each module.
     # View the result
     print(all.sets)
     all.sets <- GeneSetCollection(all.sets)
+    exprMatrix = seurat_obj[["RNA"]]$counts
 
-Step 2: Prepare Expression Matrix
-Next, we extract the expression matrix from a Seurat object, which contains gene expression data.
+Step 4: Calculate AUC and Assign Thresholds
+------------------------------------------
 
-.. code-block:: r
-
-    exprMatrx = seurat_obj[["RNA"]]$counts
-
-
-
-Step 3: Calculate AUC and Assign Thresholds
-Using the `AUCell` package, we calculate the Area Under the Curve (AUC) for the gene sets and explore the thresholds.
+We calculate the Area Under the Curve (AUC) for the gene sets and explore the thresholds using the `AUCell` package.
 
 .. code-block:: r
 
-    cells_AUC <- AUCell_calcAUC(geneSets, cells_rankings)
+    cells_rankings <- AUCell_buildRankings(exprMatrix, plotStats=FALSE)
+
+    cells_AUC <- AUCell_calcAUC(all.sets, cells_rankings)
     cells_assignment <- AUCell_exploreThresholds(cells_AUC, plotHist=TRUE, nCores=1, assign=TRUE)
+    cellInfo = data.frame(seuratCluster=Idents(seurat_obj))
+    rss = calcRSS(AUC=getAUC(cells_AUC), cellAnnotation=cellInfo[colnames(cells_AUC), "seuratCluster"])
 
-Step 4: Binarize Clusters Based on Conditions
-We binarize clusters in the Seurat object based on cell type or condition.
 
-.. code-block:: r
+Step 5: Plug into FOX.
+------------------------------------------
 
-    # Loop through each cell type to binarize clusters (remember, pick your column)
-    binarize_clusters = lapply(as.character(unique(seurat_obj@meta.data$cell_type)), 
-        function(i) {
-            cluster = ifelse(seurat_obj@meta.data$cell_type == i, 1, 0)
-            return(cluster)
-    })
-    names(binarize_clusters) = unique(seurat_obj@meta.data$cell_type)
+Take the cells_AUC and rss and export them to .csv files. Then plug them into FOX with your desired cluster names.
 
-Step 5: Binarize Regulons Based on AUC Thresholds
-Now, we binarize the regulons (gene modules) based on their AUC values and the selected thresholds.
 
 .. code-block:: r
 
-    binarize_regulons = lapply(as.character(rownames(cells_AUC)), 
-        function(i) {
-            threshold = as.double(cells_assignment[[i]]$aucThr$selected)
-            b_values <- ifelse(cells_AUC[i, ] > threshold, 1, 0)
-            return(b_values)
-    })
-    names(binarize_regulons) = rownames(cells_AUC)
+    InputForFOX = function(obj , cells_AUC, rss, cells_assignment) {
+      a  = S4ToList(cells_AUC)
+      a = a$assays$data$listData$AUC
+      a = a[!grepl("extended", rownames(a)), ]
+      a = t(a)
+      obj@meta.data =cbind(obj@meta.data, a)
+      write.csv(obj@meta.data, "RAS_matrix_foxInput.csv")
 
-Step 6: Compute Jensen-Shannon Divergence (JSD)
-Finally, we compute the Jensen-Shannon Divergence between the binarized clusters and regulons using the `philentropy <https://cran.r-project.org/web/packages/philentropy/index.html>`_ package.
+      rss = rss[!grepl("extended", rownames(rss)), ]
+      write.csv(rss, file = "rss_FOX-input.csv")
 
-.. code-block:: r
-
-    library(philentropy)
-
-    # Initialize a matrix to store the JSD values
-    jsd_matrix <- matrix(0, nrow = length(binarize_clusters), ncol = length(binarize_regulons))
-
-    # Set row and column names of the matrix
-    rownames(jsd_matrix) <- names(binarize_clusters)
-    colnames(jsd_matrix) <- names(binarize_regulons)
-
-    # Loop through each combination of binarize_clusters and binarize_regulons
-    for (i in names(binarize_clusters)) {
-      for (i2 in names(binarize_regulons)) {
-        t <- length(binarize_clusters[[i]])  # Length of the current vector
-        x_count <- rbind(binarize_clusters[[i]] / t, as.double(binarize_regulons[[i2]]) / t)  # Normalize the vectors
-        jsd_matrix[i, i2] <- 1 - sqrt(JSD(x_count, unit = "log2"))
+      for (i in as.character(rownames(cells_AUC))) {
+      	threshold = as.double(cells_assignment[[i]]$aucThr$selected)
+  	nCells = cells_assignment[[i]]$aucThr$thresholds["minimumDens", "nCells"]
+  	threshold_table <- rbind(threshold_table, data.frame(regulon = i, threshold = threshold, 	nCellsAssigned =nCells ))
       }
+
+      # Export the threshold_table to a .tsv file
+      write.table(threshold_table, file = "3.5_AUCell-thresholds.tsv", sep = "\t", row.names = FALSE, quote = FALSE)
+
+
     }
-   write.csv(jsd_matrix, file = 'RSS_scores.csv')
 
-Step 7: Plug into FOX.
-
-Take the cells_AUC and jsd_matrix and export them to .csv files. Then plug them into FOX with your desired cluster names.
+    InputForFOX(seurat_obj, cells_AUC, rss, cells_assignment)
 
 
- Conclusion
+
+Conclusion
+------------------------------------------
+
 This analysis demonstrates the process of binarizing clusters and regulons, followed by computing Jensen-Shannon Divergence to compare gene sets. These steps are useful for understanding the relationships between gene modules and cell clusters, especially in single-cell RNA-seq data. This can be applied to a variety of different gene network libraries.
 
 

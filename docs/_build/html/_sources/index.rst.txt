@@ -8,8 +8,8 @@
 FOX: Functional OMIC Xploration of Gene Regulatory Networks
 ===================================================================
 
-.. image:: ../figures/imageedit_1_7071009745.png
-   :alt: ../figures/imageedit_1_7071009745.png
+.. image:: imageedit_1_7071009745.png
+   :alt: imageedit_1_7071009745.png
    :width: 100%
    :align: center
 
