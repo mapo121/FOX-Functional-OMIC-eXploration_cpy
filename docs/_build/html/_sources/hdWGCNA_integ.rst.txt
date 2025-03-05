@@ -1,5 +1,5 @@
 R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)
-=================================================
+========================================================================
 
 This section demonstrates how to perform gene set analysis using R, binarize clusters, and compute Jensen-Shannon Divergence (JSD) for comparing modules and clusters in gene expression data.
 
@@ -84,7 +84,7 @@ We now create gene sets for each module (regulon) from the hub data frame.
     exprMatrix = seurat_obj[["RNA"]]$counts
 
 Step 4: Calculate AUC and Assign Thresholds
-------------------------------------------
+-------------------------------------------
 
 We calculate the Area Under the Curve (AUC) for the gene sets and explore the thresholds using the `AUCell` package.
 

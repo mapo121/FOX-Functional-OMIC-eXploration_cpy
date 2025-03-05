@@ -19,8 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)" href="hdWGCNA_integ.html" />
-    <link rel="prev" title="FOX: Functional OMIC Xploration of Gene Regulatory Networks" href="index.html" /> 
+    <link rel="prev" title="FOX" href="modules.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,14 +43,27 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">FOX package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fox-comparisontree-module">FOX.ComparisonTree module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module contents</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="hdWGCNA_integ.html">R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Python Example: Running the Hypergeometric Test</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">FOX</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">FOX package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-FOX.comparison_tree">FOX.comparison_tree module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#FOX.comparison_tree.ComparisonTree"><code class="docutils literal notranslate"><span class="pre">ComparisonTree</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-FOX.diagnostics">FOX.diagnostics module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#FOX.diagnostics.calculate_metrics"><code class="docutils literal notranslate"><span class="pre">calculate_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#FOX.diagnostics.calculate_r2_and_coefficients"><code class="docutils literal notranslate"><span class="pre">calculate_r2_and_coefficients()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#FOX.diagnostics.check_r2_consistency"><code class="docutils literal notranslate"><span class="pre">check_r2_consistency()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#FOX.diagnostics.process_data_for_labels"><code class="docutils literal notranslate"><span class="pre">process_data_for_labels()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-FOX">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -68,6 +80,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">FOX</a></li>
       <li class="breadcrumb-item active">FOX package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/FOX.rst.txt" rel="nofollow"> View page source</a>
@@ -83,11 +96,243 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="fox-comparisontree-module">
-<h2>FOX.ComparisonTree module<a class="headerlink" href="#fox-comparisontree-module" title="Link to this heading"></a></h2>
+<section id="module-FOX.comparison_tree">
+<span id="fox-comparison-tree-module"></span><h2>FOX.comparison_tree module<a class="headerlink" href="#module-FOX.comparison_tree" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">FOX.comparison_tree.</span></span><span class="sig-name descname"><span class="pre">ComparisonTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ras_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaData_RAS_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rss_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rownames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ras_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaData_RAS_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rss_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rownames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cond1</strong> (<em>str</em>) – control treatments</p></li>
+<li><p><strong>ras_data</strong> (<em>pandas.DataFrame</em>) – AUCell matrix and metadata</p></li>
+<li><p><strong>metaData_RAS_column</strong> (<em>list</em>) – cell cluster</p></li>
+<li><p><strong>rss_data</strong> (<em>pandas.DataFrame</em>) – RSS matrix</p></li>
+<li><p><strong>colnames</strong> (<em>list</em>) – clusters of interest</p></li>
+<li><p><strong>rownames</strong> (<em>list</em>) – rownames of each of your regulons</p></li>
+<li><p><strong>threshold_file</strong> (<em>pandas.DataFrame</em>) – Calculated by SCENIC</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.analyze_factors">
+<span class="sig-name descname"><span class="pre">analyze_factors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.analyze_factors" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>_summary_</dt><dd><p>Returns the components matrix</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cond2</strong> (<em>string</em>) – Experimental group name</p></li>
+<li><p><strong>percentages</strong> (<em>bool</em><em>, </em><em>optional</em>) – Row normalizes component per each row.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.calc_global_dictonary">
+<span class="sig-name descname"><span class="pre">calc_global_dictonary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.calc_global_dictonary" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Calculates dictionary for entire tree to query all cell clusters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary that describes spatial relationships to all different experimental groups</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.compareLayers">
+<span class="sig-name descname"><span class="pre">compareLayers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.compareLayers" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Compare between two different layers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layer1</strong> (<em>String</em>) – Cell Cluster 1</p></li>
+<li><p><strong>layer2</strong> (<em>String</em>) – Cell Cluster 2</p></li>
+<li><p><strong>distance</strong> (<em>float</em>) – Distance to query</p></li>
+<li><p><strong>font</strong> (<em>float</em><em>, </em><em>optional</em>) – _description_. Defaults to 6.5.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.compute_tau_and_kdtree">
+<span class="sig-name descname"><span class="pre">compute_tau_and_kdtree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.compute_tau_and_kdtree" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Initialize the comparisons across baseline and different experimental treatments</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.construct_3D_embedding">
+<span class="sig-name descname"><span class="pre">construct_3D_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawRSS</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.construct_3D_embedding" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Unify all components (X, Y, Z) from NMF calculation from each experimental group
+:param rawRSS: Plot raw RSS values. Defaults to False.
+:type rawRSS: bool, optional</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.construct_tree">
+<span class="sig-name descname"><span class="pre">construct_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.construct_tree" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Init class to map tau and assemble KDtree</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.create_global_tree">
+<span class="sig-name descname"><span class="pre">create_global_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">leaf_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.create_global_tree" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Calculates the KDtree for all experimental conditions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>leaf_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Leaf size for Kdtree parameter. Defaults to 10.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>KDtree, dict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.initDict">
+<span class="sig-name descname"><span class="pre">initDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.initDict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.init_order">
+<span class="sig-name descname"><span class="pre">init_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.init_order" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Construct the order of each layer (lowest -&gt; highest) for 3D plane comparison</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.map_labels_to_tau">
+<span class="sig-name descname"><span class="pre">map_labels_to_tau</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.map_labels_to_tau" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Generate a tau as a hash for embedding comparison</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.nmf_transform">
+<span class="sig-name descname"><span class="pre">nmf_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rss_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.nmf_transform" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+NMF implemented here, sets random state = 42
+:param rss_data: _description_
+:type rss_data: _type_</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>W[0], W[1], W, H</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.plotRSS_NMF">
+<span class="sig-name descname"><span class="pre">plotRSS_NMF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drawQuadrants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_pvals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tryLabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.plotRSS_NMF" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cond2</strong> (<em>String</em>) – Experimental group</p></li>
+<li><p><strong>drawQuadrants</strong> (<em>bool</em><em>, </em><em>optional</em>) – Draw quadrants to separate out regions. Defaults to True.</p></li>
+<li><p><strong>include_pvals</strong> (<em>bool</em><em>, </em><em>optional</em>) – Perform hypergeomtric testing. Defaults to False.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – FDR rate. Defaults to 0.05.</p></li>
+<li><p><strong>tryLabel</strong> (<em>str</em><em>, </em><em>optional</em>) – _description_. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>P-vals of hypergeomtric output of each regulon calculated</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.plot_3dEmbedding">
+<span class="sig-name descname"><span class="pre">plot_3dEmbedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawRSS</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulonsToView</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustersToLabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.plot_3dEmbedding" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Plot on 3D space
+:param rawRSS: Raw RSS values. Defaults to False.
+:type rawRSS: bool, optional
+:param regulonsToView: Pick which regulons to see what to change. Defaults to [].
+:type regulonsToView: list, optional
+:param clustersToLabel: Pick which experimental treatments to see labeled regulons. Defaults to [].
+:type clustersToLabel: list, optional</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.return_the_tau_pval">
+<span class="sig-name descname"><span class="pre">return_the_tau_pval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.return_the_tau_pval" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FOX.comparison_tree.ComparisonTree.sort_and_print_labels">
+<span class="sig-name descname"><span class="pre">sort_and_print_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FOX.comparison_tree.ComparisonTree.sort_and_print_labels" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+Show the experimental groups with their corresponding hash value</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="module-FOX.diagnostics">
+<span id="fox-diagnostics-module"></span><h2>FOX.diagnostics module<a class="headerlink" href="#module-FOX.diagnostics" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="FOX.diagnostics.calculate_metrics">
+<span class="sig-prename descclassname"><span class="pre">FOX.diagnostics.</span></span><span class="sig-name descname"><span class="pre">calculate_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coef</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.diagnostics.calculate_metrics" title="Link to this definition"></a></dt>
+<dd><p>Calculate final metrics:
+- The correlation coefficient (r) as the square root of R², adjusted for the sign of the coefficient.
+- The rounded R², TSS, and RSS values for reporting.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="FOX.diagnostics.calculate_r2_and_coefficients">
+<span class="sig-prename descclassname"><span class="pre">FOX.diagnostics.</span></span><span class="sig-name descname"><span class="pre">calculate_r2_and_coefficients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.diagnostics.calculate_r2_and_coefficients" title="Link to this definition"></a></dt>
+<dd><p>Perform linear regression on the provided data (condx, condy),
+and return the R², RSS (Residual Sum of Squares), TSS (Total Sum of Squares),
+and the regression coefficients.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="FOX.diagnostics.check_r2_consistency">
+<span class="sig-prename descclassname"><span class="pre">FOX.diagnostics.</span></span><span class="sig-name descname"><span class="pre">check_r2_consistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.diagnostics.check_r2_consistency" title="Link to this definition"></a></dt>
+<dd><p>Check if the calculated R² is consistent with the given RSS and TSS.
+This should hold: R² = 1 - (RSS / TSS)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="FOX.diagnostics.process_data_for_labels">
+<span class="sig-prename descclassname"><span class="pre">FOX.diagnostics.</span></span><span class="sig-name descname"><span class="pre">process_data_for_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NMF_embedd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FOX.diagnostics.process_data_for_labels" title="Link to this definition"></a></dt>
+<dd><p>Process data for each label and calculate R², RSS, TSS, and the correlation coefficient.
+Returns a dictionary where the key is the label, and the value is a tuple of calculated metrics.</p>
+</dd></dl>
+
+</section>
+<section id="module-FOX">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-FOX" title="Link to this heading"></a></h2>
 </section>
 </section>
 
@@ -95,8 +340,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="FOX: Functional OMIC Xploration of Gene Regulatory Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="hdWGCNA_integ.html" class="btn btn-neutral float-right" title="R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="FOX" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

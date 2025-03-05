@@ -14,6 +14,16 @@ FOX: Functional OMIC Xploration of Gene Regulatory Networks
    :align: center
 
 
+Installation
+------------
+
+To install the FOX package, run the following command:
+
+.. code-block:: bash
+
+    pip install -i https://test.pypi.org/simple/ FOX==0.0.1
+
+This will install FOX from the Test PyPI repository. Once installed, you can start using the package in your Python projects.
 FOX is a highly **modular** and **flexible** methodology for analyzing and comparing gene-regulatory networks, especially in single-cell gene expression data. It integrates several advanced tools, including **SCENIC**, **NMF**, and **Kendall's Tau**, to provide deep insights into gene regulation. FOX can be used to visualize, compare, and analyze the structure and activity of gene regulatory networks under different conditions.
 
 Key Features
@@ -33,39 +43,39 @@ Core Features and Functions
    - The `compareLayers` function allows you to compare two gene regulatory layers (e.g., control vs treatment) based on distance, visualizing the differences in a scatter plot.
    - It integrates **NMF**-based dimensionality reduction to plot the relative activity of genes across conditions.
 
+
+
+
  2. **Embedding and Analysis**
    - **NMF Transformation**: FOX employs **NMF** to reduce the gene-regulatory data into a 2D space, making it easier to visualize the underlying structure of the networks.
    - **3D Embedding**: It constructs 3D embeddings using **Kendall's Tau** to represent the relationships between conditions and regulons.
 
+
  3. **Global Structure Construction**
    - The `create_global_tree` function builds a hierarchical tree structure of the regulatory network, which can be used to assess the overall network structure and its consistency across conditions.
+
 
  4. **Statistical Analysis and Visualization**
    - **Kendall's Tau**: Computes the correlation between conditions and provides insights into the strength and direction of gene activity.
    - **Component Analysis**: Generate heatmaps to visualize factor contributions and the relationships between regulatory factors under different conditions.
 
+
  5. **Cluster Analysis**
    - FOX uses **KMeans clustering** to group gene activity data, providing a way to identify clusters of genes that behave similarly across conditions.
    - **Quadrant Visualization**: Draw quadrants in 2D plots to divide and analyze clusters based on median values.
-
-Installation
-------------
-
-To install the FOX package, run the following command:
-
-.. code-block:: bash
-
-    pip install -i https://test.pypi.org/simple/ FOX==0.0.1
-
-This will install FOX from the Test PyPI repository. Once installed, you can start using the package in your Python projects.
 
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
    
-   index
-
-   FOX
    hdWGCNA_integ
    intro
+   modules
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

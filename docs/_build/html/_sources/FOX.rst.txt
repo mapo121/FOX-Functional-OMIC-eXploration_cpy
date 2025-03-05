@@ -4,10 +4,18 @@ FOX package
 Submodules
 ----------
 
-FOX.ComparisonTree module
--------------------------
+FOX.comparison\_tree module
+---------------------------
 
-.. automodule:: FOX.ComparisonTree
+.. automodule:: FOX.comparison_tree
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+FOX.diagnostics module
+----------------------
+
+.. automodule:: FOX.diagnostics
    :members:
    :undoc-members:
    :show-inheritance:

@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="FOX package" href="FOX.html" /> 
+    <link rel="next" title="R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)" href="hdWGCNA_integ.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,9 +43,9 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="FOX.html">FOX package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hdWGCNA_integ.html">R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Python Example: Running the Hypergeometric Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">FOX</a></li>
 </ul>
 
         </div>
@@ -76,7 +76,15 @@
 <h1>FOX: Functional OMIC Xploration of Gene Regulatory Networks<a class="headerlink" href="#fox-functional-omic-xploration-of-gene-regulatory-networks" title="Link to this heading"></a></h1>
 <a class="reference internal image-reference" href="_images/imageedit_1_7071009745.png"><img alt="imageedit_1_7071009745.png" class="align-center" src="_images/imageedit_1_7071009745.png" style="width: 100%;" />
 </a>
-<p>FOX is a highly <strong>modular</strong> and <strong>flexible</strong> methodology for analyzing and comparing gene-regulatory networks, especially in single-cell gene expression data. It integrates several advanced tools, including <strong>SCENIC</strong>, <strong>NMF</strong>, and <strong>Kendall’s Tau</strong>, to provide deep insights into gene regulation. FOX can be used to visualize, compare, and analyze the structure and activity of gene regulatory networks under different conditions.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>To install the FOX package, run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-i<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span><span class="nv">FOX</span><span class="o">==</span><span class="m">0</span>.0.1
+</pre></div>
+</div>
+<p>This will install FOX from the Test PyPI repository. Once installed, you can start using the package in your Python projects.
+FOX is a highly <strong>modular</strong> and <strong>flexible</strong> methodology for analyzing and comparing gene-regulatory networks, especially in single-cell gene expression data. It integrates several advanced tools, including <strong>SCENIC</strong>, <strong>NMF</strong>, and <strong>Kendall’s Tau</strong>, to provide deep insights into gene regulation. FOX can be used to visualize, compare, and analyze the structure and activity of gene regulatory networks under different conditions.</p>
+</section>
 <section id="key-features">
 <h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
 <ul class="simple">
@@ -136,23 +144,9 @@
 </ul>
 </div></blockquote>
 </div></blockquote>
-</section>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
-<p>To install the FOX package, run the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-i<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span><span class="nv">FOX</span><span class="o">==</span><span class="m">0</span>.0.1
-</pre></div>
-</div>
-<p>This will install FOX from the Test PyPI repository. Once installed, you can start using the package in your Python projects.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="FOX.html">FOX package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="FOX.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FOX.html#fox-comparisontree-module">FOX.ComparisonTree module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FOX.html#module-contents">Module contents</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="hdWGCNA_integ.html">R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="hdWGCNA_integ.html#step-1-define-calcrss-function">Step 1: Define <cite>calcRSS</cite> Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hdWGCNA_integ.html#step-2-internal-functions-for-jsd-and-rss-calculation">Step 2: Internal Functions for JSD and RSS Calculation</a></li>
@@ -168,16 +162,28 @@
 <li class="toctree-l2"><a class="reference internal" href="intro.html#explanation-of-functions">Explanation of Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">FOX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="FOX.html">FOX package</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="FOX.html" class="btn btn-neutral float-right" title="FOX package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="hdWGCNA_integ.html" class="btn btn-neutral float-right" title="R Code Example: Gene Set Analysis and Binarization (hdWGCNA integration)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
