@@ -1,5 +1,6 @@
 
 ---
+![alt text](docs/imageedit_1_7071009745.png)
 
 # FOX: **F**unctional OMIC  e**X**ploration of Gene Regulatory Networks
 
