@@ -16,7 +16,9 @@ FOX: Functional OMIC Xploration of Gene Regulatory Networks
 
 See examples:
 
-You can view the examples here  `<FOX_lib_paper.html>`_
+Quick start guide `<Test_group.html>`_
+
+You can view the paper's examples here  `<FOX_lib_paper.html>`_
 
 Installation
 ------------
