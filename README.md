@@ -21,6 +21,11 @@ FOX is a highly **modular** and **flexible** methodology for analyzing and compa
 To run FOX, you'll need to prepare your data (such as RSS matrices and metadata) and pass it to the class. Here's an example of how to initialize and use FOX:
 
 ```python
+	from FOXREG import ComparisonTree
+	import pandas as pd
+	import warnings
+	warnings.filterwarnings("ignore")
+
         data = pd.read_csv("QA_QC_PBMC_rss_values_Feb3.csv") ## this would be one comparison (RSS)
         df_RAS = pd.read_csv("obj_AUC_metadata2_PBMC.csv") ## grab this from your SCENIC stuff, include ALL METADATA AUC AND cellLabels
 
