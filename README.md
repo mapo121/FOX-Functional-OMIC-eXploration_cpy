@@ -2,6 +2,8 @@
 ---
 ![alt text](docs/image_cover.jpg)
 
+Let me know if you need further customization or changes! Email: mapostol@unmc.edu
+
 # FOX: **F**unctional OMIC  e**X**ploration of Gene Regulatory Networks
 
 FOX is a highly **modular** and **flexible** methodology for analyzing and comparing gene-regulatory networks, especially in single-cell gene expression data. It integrates several advanced tools, including **SCENIC**, **NMF**, and **Kendall's Tau**, to provide deep insights into gene regulation. FOX can be used to visualize, compare, and analyze the structure and activity of gene regulatory networks under different conditions.
@@ -51,4 +53,3 @@ Contributions are welcome! Feel free to fork the repository and submit pull requ
 
 ---
 
-Let me know if you need further customization or changes! Email: mapostol@unmc.edu
