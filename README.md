@@ -8,6 +8,8 @@ FOX is a highly **modular** and **flexible** methodology for analyzing and compa
 
 Website Documentation: 
 
+![Paper results](docs/FOX_lib_paper.html)
+ 
 ## Installation (test)
 
 	pip install -i https://test.pypi.org/simple/ FOX==0.0.1
