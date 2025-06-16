@@ -13,7 +13,8 @@ FOX is a highly **modular** and **flexible** methodology for analyzing and compa
 
 ## Installation (test)
 
-	pip install -i https://test.pypi.org/simple/ FOX==0.0.1
+	pip install FOXREG
+
 
 ## Usage
 
@@ -52,5 +53,6 @@ To run FOX, you'll need to prepare your data (such as RSS matrices and metadata)
 
 Contributions are welcome! Feel free to fork the repository and submit pull requests for bug fixes, new features, or improvements. Help us improve FOX!
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ---
 
