@@ -8,7 +8,7 @@
 
 import os
 import sys
-project = 'FOX'
+project = 'FOXREG'
 copyright = '2025, Moses Apostol'
 author = 'Moses Apostol'
 release = '0.0.1'
