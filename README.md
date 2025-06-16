@@ -4,12 +4,15 @@
 
 Let me know if you need further customization or changes! Email: mapostol@unmc.edu
 
-# FOX: **F**unctional OMIC  e**X**ploration of Gene Regulatory Networks
+# F🦊X: **F**unctional OMIC  e**X**ploration of Gene Regulatory Networks
 
 FOX is a highly **modular** and **flexible** methodology for analyzing and comparing gene-regulatory networks, especially in single-cell gene expression data. It integrates several advanced tools, including **SCENIC**, **NMF**, and **Kendall's Tau**, to provide deep insights into gene regulation. FOX can be used to visualize, compare, and analyze the structure and activity of gene regulatory networks under different conditions.
 
-[📘 Website Documentation](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/)
+[📘 Website Documentation](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/) • [🦊 Quick examples](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/Test_group.html)
 
+<p align="center">
+  <img src="https://em-content.zobj.net/source/twitter/376/fox_1f98a.png" width="100" alt="FOXREG logo"/>
+</p>
 
 ## Installation (test)
 
@@ -59,5 +62,7 @@ To run FOX, you'll need to prepare your data (such as RSS matrices and metadata)
 Contributions are welcome! Feel free to fork the repository and submit pull requests for bug fixes, new features, or improvements. Help us improve FOX!
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+Emoji artwork © Twitter, used under CC-BY 4.0 via [Twemoji](https://twemoji.twitter.com/)
+
 ---
 
