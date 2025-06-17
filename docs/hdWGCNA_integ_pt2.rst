@@ -46,6 +46,7 @@ Calculate the hub_df from the vignette and plug in your module eigengenes here!
    # 2      Gene2 blue     0.3694937
    # 3      Gene3 blue     0.3318094
    # 4      Gene4 black    0.3304103
+   # 5      Gene5 black    0.3312313
 
    # df_grouped = hub_df %>% group_by(module) %>% summarize(genes_in_module = list(gene_name), .groups = "drop")
 
