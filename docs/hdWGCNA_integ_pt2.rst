@@ -13,6 +13,7 @@ You must install these R packages:
 
    library(AUCell)
    library(SCENIC)
+   library(dplyr)
 
 Prepare expression matrix from your Seurat object:
 
@@ -35,11 +36,25 @@ Gene sets: Use hdWGCNA output or define manually:
 Calculate the hub_df from the vignette and plug in your module eigengenes here!
 
 .. code-block:: r
-   ## assuming you calculated the gene sets and have a copy of them... see GetHubGenes(seurat_obj, n_hubs = 10) from hdWGCNA
+   #  assuming you calculated the gene sets and have a copy of them... see GetHubGenes(seurat_obj, n_hubs = 10) from hdWGCNA
+   #  shape of hub_df
+
+   #   gene_name  module       kME
+   # 1      Gene1 black    0.3711414
+   # 2      Gene2 blue     0.3694937
+   # 3      Gene3 blue     0.3318094
+   # 4      Gene4 black    0.3304103
+
+   # df_grouped = hub_df %>% group_by(module) %>% summarize(genes_in_module = list(gene_name), .groups = "drop")
+
+    # Create gene sets for each module
+    # geneSets <- lapply(1:nrow(df_grouped), function(i) {
+    #    GeneSet(df_grouped$genes_in_module[[i]], setName = as.character(df_grouped$module[i]))
+    # })
 
    ## this is how you upload them to AUCell... you can plug in each your gene sets here
    geneSets <- list(
-     black = c("Gene1", "Gene3", "Gene4"),
+     black = c("Gene1", "Gene5", "Gene4"),
      blue  = c("Gene3", "Gene2")
    )
 
