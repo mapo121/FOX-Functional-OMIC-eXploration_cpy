@@ -32,10 +32,12 @@ Previous Steps in the Workflow
 
 **Step 2: Calculate AUC**
 
-Gene sets: Use hdWGCNA output or define manually:
+Use hdWGCNA output or define manually.
+
 Calculate the hub_df from the vignette and plug in your module eigengenes here!
 
 .. code-block:: r
+
    #  assuming you calculated the gene sets and have a copy of them... see GetHubGenes(seurat_obj, n_hubs = 10) from hdWGCNA
    #  shape of hub_df
 
