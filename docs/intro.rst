@@ -4,7 +4,7 @@ Python Example: Running the Hypergeometric Test
 FOX requires two inputs: The AUC matrix provided by AUCell and the RSS matrix calculated by SCENIC.  
 The functions `returnThreshold_dictionary` and `rundifferential_test_AUC` explain how we test for the expression of regulons.
 
-Helper Functions
+Hypergeometric testing by FOX (internals)
 -----------------
 First, we define the essential helper functions needed to conduct differential testing.
 
@@ -82,6 +82,37 @@ First, we define the essential helper functions needed to conduct differential t
 
         return (regulon_name, round(p_value_1, 2), round(p_value_2, 2))
 
+Preparation of data for FOX
+---------------------------
+To run FOX, we're assuming that you are using Seurat. We are using SCENIC, after you run it you should see a file named 
+3.4_regulonAUC.Rds with a file named 3.5_AUCellThresholds_Info.tsv. You want to save both of those!
+
+.. code-block:: r
+    
+    library(SCENIC)
+    library(AUCell)
+
+    regulonAUC = readRDS("3.4_regulonAUC.Rds")
+    
+    ## optional step... remove the extended "low-confidence"
+    cells_AUC = regulonAUC[!grepl("extended", rownames(regulonAUC)), ]
+    
+    cells_AUC = getAUC(cells_AUC)
+    seurat_obj@meta.data <- cbind(seurat_obj@meta.data, t(cells_AUC))
+
+    write.csv(seurat_obj@meta.data, file = "RAS_AUC_values.csv")
+    ## calculate then the RSS file! 
+    
+    cellInfo <- data.frame(seuratCluster=Idents(seurat_obj))
+    rss <- calcRSS(AUC=getAUC(regulonAUC), cellAnnotation=cellInfo[colnames(regulonAUC), "seuratCluster"])
+
+    # if you removed the extended earlier, remove them down here
+    rss = rss[!grepl("extended", rownames(rss)), ]
+
+    write.csv(rss, "rss_values_.csv")
+
+
+
 Usage Example
 -------------
 To run FOX, you'll need to prepare your data (such as RSS matrices and metadata) and pass it to the class. Here's an example of how to initialize and use FOX:
@@ -94,16 +125,16 @@ To run FOX, you'll need to prepare your data (such as RSS matrices and metadata)
     warnings.filterwarnings("ignore")
     
     # Read in the data
-    data = pd.read_csv("QA_QC_PBMC_rss_values_Feb3.csv")  # RSS values
-    df_RAS = pd.read_csv("obj_AUC_metadata2_PBMC.csv")  # AUC metadata
+    data = pd.read_csv("rss_values_.csv")  # RSS values
+    df_RAS = pd.read_csv("RAS_AUC_values.csv")  # AUC metadata
     
     # Define labels for your comparison
     labels = data.columns[1:].tolist()
 
     # Initialize the ComparisonTree with your data
     comparison = ComparisonTree(
-        "Naive CD4 T", df_RAS, "newLabels", data, labels, "Unnamed: 0", 
-        "3.5_AUCellThresholds_Info_PVMC_QA_QC.tsv"
+        "<Baseline >", df_RAS, "newLabels", data, labels, "Unnamed: 0", 
+        "3.5_AUCellThresholds_Info.tsv"
     )
 
     # Build the tree and run analyses

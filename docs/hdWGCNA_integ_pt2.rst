@@ -35,7 +35,9 @@ Gene sets: Use hdWGCNA output or define manually:
 Calculate the hub_df from the vignette and plug in your module eigengenes here!
 
 .. code-block:: r
+   ## assuming you calculated the gene sets and have a copy of them... see GetHubGenes(seurat_obj, n_hubs = 10) from hdWGCNA
 
+   ## this is how you upload them to AUCell... you can plug in each your gene sets here
    geneSets <- list(
      black = c("Gene1", "Gene3", "Gene4"),
      blue  = c("Gene3", "Gene2")
