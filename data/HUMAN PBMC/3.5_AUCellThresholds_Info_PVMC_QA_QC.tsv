@@ -1,0 +1,135 @@
+regulon	threshold	nCellsAssigned	AUCellComment	nGenes	clusteringOrder	clusterGroup	onlyNonDuplicatedExtended	personalNotes
+SPIB_extended (184g)	0.0822	351		184	1	3	FALSE	
+SPIB (137g)	0.0809	347		137	2	3	TRUE	
+RFX5_extended (23g)	0.0716	618		23	3	3	FALSE	
+RFX5 (20g)	0.0816	619		20	4	3	TRUE	
+IRF8_extended (262g)	0.0627	727		262	5	3	FALSE	
+IRF8 (137g)	0.0711	659		137	6	3	TRUE	
+ELF4_extended (59g)	0.0803	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	59	7	3	TRUE	
+BATF_extended (17g)	0.0207	997		17	8	3	TRUE	
+NFE2L2_extended (15g)	0.0162	1995	 The global distribution overlaps the partial distributions. 	15	9	3	FALSE	
+NFE2L2 (11g)	0.0247	1893	 The global distribution overlaps the partial distributions. 	11	10	3	TRUE	
+IKZF1_extended (89g)	0.1	1	The AUC might follow a normal distribution (random gene-set?). 	89	11	3	TRUE	
+IRF1_extended (82g)	0.117	0	The AUC might follow a normal distribution (random gene-set?). 	82	12	3	FALSE	
+IRF1 (20g)	0.137	12	 The global distribution overlaps the partial distributions. 	20	13	3	TRUE	
+RELB_extended (45g)	0.0677	101	 The global distribution overlaps the partial distributions. 	45	14	3	FALSE	
+RELB (33g)	0.0734	123	 The global distribution overlaps the partial distributions. 	33	15	3	TRUE	
+ATF3_extended (108g)	0.0605	561		108	16	3	FALSE	
+CEBPA_extended (58g)	0.0925	641		58	17	3	FALSE	
+CEBPA (21g)	0.107	568		21	18	3	TRUE	
+ETV6_extended (166g)	0.0435	401	 The global distribution overlaps the partial distributions. 	166	19	3	TRUE	
+IRF5_extended (59g)	0.0509	279	 The global distribution overlaps the partial distributions. 	59	20	3	TRUE	
+KLF3_extended (109g)	0.113	2	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	109	21	3	TRUE	
+SMARCA4_extended (91g)	0.0717	1	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	91	22	3	TRUE	
+FOSL2_extended (41g)	0.0494	232	 The global distribution overlaps the partial distributions. 	41	23	3	FALSE	
+FOSL2 (11g)	0.0392	750		11	24	3	TRUE	
+IRF7_extended (416g)	0.135	339		416	25	3	FALSE	
+IRF7 (191g)	0.0888	67	 The global distribution overlaps the partial distributions. 	191	26	3	TRUE	
+FOSB_extended (63g)	0.275	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	63	27	3	TRUE	
+TCF7L2_extended (26g)	0.259	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	26	28	3	TRUE	
+NFE2_extended (233g)	0.0647	664		233	29	3	FALSE	
+NFE2 (128g)	0.0592	633		128	30	3	TRUE	
+CEBPD_extended (125g)	0.072	582		125	31	3	TRUE	
+KLF4 (168g)	0.0833	553		168	32	3	TRUE	
+MAFB_extended (71g)	0.135	536		71	33	3	TRUE	
+CEBPB_extended (806g)	0.222	622		806	34	3	TRUE	
+KLF4_extended (655g)	0.227	665		655	35	3	FALSE	
+SPI1_extended (1482g)	0.41	670		1482	36	3	FALSE	
+SPI1 (1122g)	0.308	669		1122	37	3	TRUE	
+POLE3_extended (52g)	0.0725	26	 The global distribution overlaps the partial distributions. 	52	38	2	FALSE	
+POLE3 (44g)	0.0845	19	 The global distribution overlaps the partial distributions. 	44	39	2	TRUE	
+STAT2_extended (13g)	0.0397	573		13	40	2	TRUE	
+STAT1_extended (259g)	0.0428	2629	 The global distribution overlaps the partial distributions. 	259	41	2	FALSE	
+STAT1 (180g)	0.0304	2630	 The global distribution overlaps the partial distributions. 	180	42	2	TRUE	
+RAD21_extended (104g)	0.113	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	104	43	2	TRUE	
+IRF2_extended (89g)	0.0689	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	89	44	2	FALSE	
+IRF2 (26g)	0.00939	2209		26	45	2	TRUE	
+TBL1XR1_extended (23g)	0.0126	1757	 The global distribution overlaps the partial distributions. 	23	46	2	FALSE	
+TBL1XR1 (16g)	0.0182	1595	 The global distribution overlaps the partial distributions. 	16	47	2	TRUE	
+GTF2F1_extended (77g)	0.126	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	77	48	2	TRUE	
+NFYC_extended (41g)	0.138	1	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	41	49	2	TRUE	
+MAX_extended (326g)	0.119	13		326	50	2	FALSE	
+MAX (77g)	0.128	10	The AUC might follow a normal distribution (random gene-set?). 	77	51	2	TRUE	
+ATF3 (37g)	0.0505	94	 The global distribution overlaps the partial distributions. 	37	52	2	TRUE	
+ATF6_extended (12g)	0.0201	690		12	53	2	TRUE	
+KLF11_extended (28g)	0.133	2	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	28	54	2	FALSE	
+KLF11 (11g)	0.286	1	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	11	55	2	TRUE	
+CHD2_extended (26g)	0.0141	1376		26	56	2	TRUE	
+RORA_extended (11g)	0.028	1033		11	57	2	TRUE	
+ELF1_extended (129g)	0.085	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	129	58	2	FALSE	
+ELF1 (55g)	0.0478	77	 The global distribution overlaps the partial distributions. 	55	59	2	TRUE	
+TRIM69 (24g)	0.0695	138	 The global distribution overlaps the partial distributions. 	24	60	2	TRUE	
+BHLHE40_extended (12g)	0.0256	716		12	61	2	TRUE	
+YY1_extended (73g)	0.0929	1	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	73	62	2	FALSE	
+YY1 (68g)	0.0968	1	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	68	63	2	TRUE	
+REL_extended (59g)	0.0452	88	 The global distribution overlaps the partial distributions. 	59	64	2	FALSE	
+REL (54g)	0.0657	2	 The global distribution overlaps the partial distributions. 	54	65	2	TRUE	
+KLF12_extended (42g)	0.0511	7	 The global distribution overlaps the partial distributions. 	42	66	2	FALSE	
+KLF12 (25g)	0.00866	645		25	67	2	TRUE	
+GTF2B_extended (28g)	0.149	1	The AUC might follow a normal distribution (random gene-set?). 	28	68	2	FALSE	
+GTF2B (16g)	0.0238	568		16	69	2	TRUE	
+HDAC2_extended (42g)	0.0184	549		42	70	2	TRUE	
+NFATC1_extended (16g)	0.0272	387		16	71	2	TRUE	
+TP53_extended (11g)	0.0164	365	79% (more than 0.75%) of AUC are zero. 	11	72	2	TRUE	
+UTP18 (13g)	0.0179	448		13	73	2	TRUE	
+TFEB_extended (15g)	0.0158	470		15	74	2	TRUE	
+KLF13 (12g)	0.0158	387	79% (more than 0.75%) of AUC are zero. 	12	75	2	TRUE	
+KLF10_extended (145g)	0.0545	1	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	145	76	2	TRUE	
+MEF2A_extended (11g)	0.0334	964		11	77	2	TRUE	
+PML_extended (35g)	0.0242	589		35	78	2	TRUE	
+MXD4_extended (17g)	0.0207	1424		17	79	2	TRUE	
+CTCF_extended (130g)	0.102	3	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	130	80	1	FALSE	
+CTCF (15g)	0.00963	2615	 The global distribution overlaps the partial distributions. 	15	81	1	TRUE	
+THAP1_extended (32g)	0.0703	88	 The global distribution overlaps the partial distributions. 	32	82	1	FALSE	
+THAP1 (18g)	0.0137	2037	 The global distribution overlaps the partial distributions. 	18	83	1	TRUE	
+DBP_extended (46g)	0.122	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	46	84	1	FALSE	
+DBP (31g)	0.0513	186	 The global distribution overlaps the partial distributions. 	31	85	1	TRUE	
+SIN3A_extended (30g)	0.0215	574		30	86	1	TRUE	
+XBP1_extended (38g)	0.141	4	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	38	87	1	FALSE	
+XBP1 (18g)	0.00879	2576		18	88	1	TRUE	
+RELA_extended (32g)	0.0788	289	 The global distribution overlaps the partial distributions. 	32	89	1	TRUE	
+TBX21_extended (46g)	0.0716	280		46	90	1	FALSE	
+TBX21 (23g)	0.0346	463		23	91	1	TRUE	
+CBFB_extended (12g)	0.0189	438		12	92	1	TRUE	
+TFDP2_extended (40g)	0.0163	538		40	93	1	TRUE	
+IRF3_extended (79g)	0.099	1	The AUC might follow a normal distribution (random gene-set?).  The right distribution is taller. 	79	94	1	TRUE	
+HOXB2_extended (32g)	0.0887	178		32	95	1	FALSE	
+HOXB2 (13g)	0.0454	626		13	96	1	TRUE	
+MEF2D_extended (15g)	0.0165	2000	 The global distribution overlaps the partial distributions. 	15	97	1	TRUE	
+ATF1_extended (24g)	0.231	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	24	98	1	FALSE	
+ATF1 (19g)	0.285	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	19	99	1	TRUE	
+ELK3_extended (44g)	0.00653	2621	 The global distribution overlaps the partial distributions. 	44	100	1	FALSE	
+ELK3 (24g)	0.00717	2525	 The global distribution overlaps the partial distributions. 	24	101	1	TRUE	
+MAZ_extended (69g)	0.0928	0	The AUC might follow a normal distribution (random gene-set?). 	69	102	1	TRUE	
+POLR2A_extended (123g)	0.115	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	123	103	1	FALSE	
+POLR2A (64g)	0.125	0	The AUC might follow a normal distribution (random gene-set?). 	64	104	1	TRUE	
+BCLAF1_extended (78g)	0.13	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	78	105	1	FALSE	
+BCLAF1 (22g)	0.00891	2573		22	106	1	TRUE	
+ZNF143_extended (81g)	0.102	2	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	81	107	1	FALSE	
+ZNF143 (14g)	0.0177	2136	 The global distribution overlaps the partial distributions. 	14	108	1	TRUE	
+E2F4_extended (70g)	0.135	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	70	109	1	TRUE	
+UBTF_extended (15g)	0.0242	1165		15	110	1	TRUE	
+FOXJ3_extended (13g)	0.0212	1836	 The global distribution overlaps the partial distributions. 	13	111	1	TRUE	
+KDM5A_extended (63g)	0.111	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	63	112	1	TRUE	
+NPDC1_extended (18g)	0.402	0	The AUC might follow a normal distribution (random gene-set?).  The right distribution is taller. 	18	113	1	TRUE	
+ETS1_extended (164g)	0.049	2627	 The global distribution overlaps the partial distributions. 	164	114	1	FALSE	
+ETS1 (86g)	0.0471	2629	 The global distribution overlaps the partial distributions. 	86	115	1	TRUE	
+ZNF274_extended (49g)	0.222	0	 The global distribution overlaps the partial distributions. 	49	116	1	TRUE	
+TAF7_extended (243g)	0.186	0	 The global distribution overlaps the partial distributions. 	243	117	1	TRUE	
+JUN_extended (363g)	0.106	2627	 The global distribution overlaps the partial distributions. 	363	118	1	TRUE	
+MYC_extended (207g)	0.0955	2627	 The global distribution overlaps the partial distributions. 	207	119	1	TRUE	
+ZBTB7A_extended (12g)	0.0244	1342	 The global distribution overlaps the partial distributions. 	12	120	1	TRUE	
+FLI1_extended (286g)	0.119	1	The AUC might follow a normal distribution (random gene-set?). 	286	121	1	FALSE	
+FLI1 (220g)	0.101	1	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	220	122	1	TRUE	
+TRIM28_extended (14g)	0.0191	2159	 The global distribution overlaps the partial distributions. 	14	123	1	TRUE	
+KLF2_extended (149g)	0.122	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	149	124	1	FALSE	
+KLF2 (142g)	0.123	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	142	125	1	TRUE	
+FOXN3_extended (13g)	0.0827	2268		13	126	1	TRUE	
+ELF2_extended (85g)	0.104	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	85	127	1	FALSE	
+ELF2 (53g)	0.0909	0	The AUC might follow a normal distribution (random gene-set?). 	53	128	1	TRUE	
+HCFC1_extended (72g)	0.172	0	The AUC might follow a normal distribution (random gene-set?).  The right distribution is taller. 	72	129	1	TRUE	
+FOS_extended (83g)	0.172	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	83	130	1	TRUE	
+ZC3H11A_extended (14g)	0.286	0		14	131	1	TRUE	
+ATF4 (144g)	0.115	0	The AUC might follow a normal distribution (random gene-set?).  The global distribution overlaps the partial distributions. 	144	132	1	TRUE	
+CREB1_extended (31g)	0.0615	120		31	133	1	TRUE	
+EGR1_extended (29g)	0.207	1	The AUC might follow a normal distribution (random gene-set?).  The right distribution is taller. 	29	134	1	TRUE	
