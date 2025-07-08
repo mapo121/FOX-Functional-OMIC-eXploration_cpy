@@ -8,7 +8,7 @@ Let me know if you need further customization or changes! Email: mapostol@unmc.e
 
 FOX is a highly **modular** and **flexible** methodology for analyzing and comparing gene-regulatory networks, especially in single-cell gene expression data. It integrates several advanced tools, including **SCENIC**, **NMF**, and **Kendall's Tau**, to provide deep insights into gene regulation. FOX can be used to visualize, compare, and analyze the structure and activity of gene regulatory networks under different conditions.
 
-[📘 Website Documentation](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/) • [🦊 Quick examples](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/Test_group.html) 
+[📘 Website Documentation](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/) • [🦊 Quick examples](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/Test_group_final.html) 
 
 To see examples of formatted data, see data/
 
