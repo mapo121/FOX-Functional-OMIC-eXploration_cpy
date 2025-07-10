@@ -123,8 +123,8 @@ Get AUC and Generate RSS
    write.csv(rss, file = "rss_values_.csv")
 
    # Merge RAS with metadata
-   pbmc_cpy@meta.data <- cbind(pbmc_cpy@meta.data, t(cells_test_RAS))
-   write.csv(pbmc_cpy@meta.data, file = "RAS_values_dataset.csv")
+   Seurat_obj@meta.data <- cbind(Seurat_obj@meta.data, t(cells_test_RAS))
+   write.csv(Seurat_obj@meta.data, file = "RAS_values_dataset.csv")
 
 
 Usage Example
