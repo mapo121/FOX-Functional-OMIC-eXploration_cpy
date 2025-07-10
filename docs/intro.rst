@@ -144,7 +144,7 @@ To run FOX, you'll need to prepare your data (such as RSS matrices and metadata)
     comparison.analyze_factors("B", percentages=True)
     comparison.compareLayers("B", "Naive CD4 T", 0.055)
     tr = comparison.create_global_tree()
-    tree, dict = tr
+    tree, dict_save = tr
 
 Explanation of Functions
 ------------------------
