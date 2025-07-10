@@ -30,3 +30,14 @@ DimPlot(pbmc, reduction = "umap")
 dev.off()
 
 save(pbmc, file = "pbmc_new.RData")
+
+## Note Jul 10 note - earlier pipeline was ran 2/3/2025, we ran a R_session that did this later
+
+### labeling done in post R-session (Jul10)
+## same biomarkers found in PBMC3k tutorial: https://satijalab.org/seurat/articles/pbmc3k_tutorial
+## new.cluster.ids <- c("Naive CD4 T", "CD14+ Mono", "Memory CD4 T", "B", "CD8 T", "FCGR3A+ Mono",
+    "NK", "DC", "Platelet")
+## names(new.cluster.ids) <- levels(pbmc)
+## pbmc <- RenameIdents(pbmc, new.cluster.ids)
+## DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+## subsetted object was done with pbmc_noPlatelet = subset(pbmc, idents=c("Platelet"), invert=TRUE)
