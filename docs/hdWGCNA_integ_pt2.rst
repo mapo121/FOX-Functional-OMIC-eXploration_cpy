@@ -7,6 +7,8 @@ hub_df was generated from following the tutorial here: `hdWGCNA <https://smorabi
 
 You need to download AUCell, dplyr, SCENIC, and BiocParallel.
 
+Source Example workflow : Preparing the input for FOX (based on: https://rdrr.io/github/aertslab/AUCell/man/AUCell_exploreThresholds.html)
+
 You must install these R packages:
 
 .. code-block:: r
