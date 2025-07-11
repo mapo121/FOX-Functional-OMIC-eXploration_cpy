@@ -133,6 +133,9 @@ Usage Example
 -------------
 To run FOX, you'll need to prepare your data (such as RSS matrices and metadata) and pass it to the class. Here's an example of how to initialize and use FOX:
 
+See examples: `<Test_group_supplemental.html>`_
+
+
 .. code-block:: python
 
    from FOXREG import ComparisonTree
