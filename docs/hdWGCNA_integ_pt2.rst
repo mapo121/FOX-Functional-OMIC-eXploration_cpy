@@ -69,9 +69,8 @@ Calculate the hub_df from the vignette and plug in your module eigengenes here!
 
 .. code-block:: r
 
-   # Plot histograms and obtain thresholds
    set.seed(123)
-   thresholds <- AUCell_exploreThresholds(cells_AUC, plotHist=FALSE)
+   thresholds <- AUCell_exploreThresholds(cells_AUC, plotHist=FALSE) #no cells
 
    # Assign cells based on thresholds
    cells_assignment <- AUCell_exploreThresholds(
