@@ -34,7 +34,15 @@ To run FOX, you'll need to prepare your data (such as RSS matrices and metadata)
         data = pd.read_csv("QA_QC_PBMC_rss_values_Feb3.csv") ## this would be one comparison (RSS)
         df_RAS = pd.read_csv("obj_AUC_metadata2_PBMC.csv") ## grab this from your SCENIC stuff, include ALL METADATA AUC AND cellLabels
 
-        labels = data.columns[1:].tolist()
+	labels = [
+    		"B",
+    		"CD14+ Mono",
+    		"NK",
+    		"CD8 T",
+    		"FCGR3A+ Mono",
+    		"DC",
+    		"Memory CD4 T"
+	]
 
         # your new labels here is your "tissue" or "cell" column
         comparison = ComparisonTree("Naive CD4 T", df_RAS, "newLabels", data, labels, "Unnamed: 0", "3.5_AUCellThresholds_Info_PVMC_QA_QC.tsv")
