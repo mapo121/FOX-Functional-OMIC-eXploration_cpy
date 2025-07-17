@@ -1,6 +1,8 @@
 library(SCENIC)
 #https://htmlpreview.github.io/?https://github.com/aertslab/SCENIC/blob/master/inst/doc/SCENIC_Running.html
 
+# NOTE (Jul17): 
+# see grnboostv2.py : I by default make it look for 1.4_GENIE3_linkList-0.tsv, this filename was unused, just for documentation
 import_arb = function(filename) {
 	GRNBoost_linkList <- importArboreto("1.4_GENIE3_linkList-0.tsv")
 	colnames(GRNBoost_linkList) = c("TF", "Target", "weight")
@@ -8,7 +10,7 @@ import_arb = function(filename) {
 	saveRDS(GRNBoost_linkList, file = "int/1.4_GENIE3_linkList.Rds")
 }
 
-# NOTE:
+# NOTE (JUL17):
 # The parameters 'cluster_on', 'session_name', 'cores', and 'topWhat' are unused in the function logic below.
 # They were left intentionally as placeholders to help track metadata during development — such as run timestamps or labeling conventions.
 # These parameters are not referenced internally and serve only as run-level context for the developer.
