@@ -1,7 +1,7 @@
 library(SCENIC)
 #https://htmlpreview.github.io/?https://github.com/aertslab/SCENIC/blob/master/inst/doc/SCENIC_Running.html
 
-# NOTE (Jul17): 
+# NOTE (JUL17): 
 # see grnboostv2.py : I by default make it look for 1.4_GENIE3_linkList-0.tsv, this filename was unused, just for documentation
 import_arb = function(filename) {
 	GRNBoost_linkList <- importArboreto("1.4_GENIE3_linkList-0.tsv")
