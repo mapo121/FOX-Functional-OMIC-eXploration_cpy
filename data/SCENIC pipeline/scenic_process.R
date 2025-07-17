@@ -8,6 +8,11 @@ import_arb = function(filename) {
 	saveRDS(GRNBoost_linkList, file = "int/1.4_GENIE3_linkList.Rds")
 }
 
+# NOTE:
+# The parameters 'cluster_on', 'session_name', 'cores', and 'topWhat' are unused in the function logic below.
+# They were left intentionally as placeholders to help track metadata during development — such as run timestamps or labeling conventions.
+# These parameters are not referenced internally and serve only as run-level context for the developer.
+
 seurat_scenicV3 = function(obj, cluster_on, session_name, cores, topWhat) {
 exprMat = as.matrix(obj[['RNA']]$counts)
 save(obj, exprMat, file = "pt_1_.RData")
