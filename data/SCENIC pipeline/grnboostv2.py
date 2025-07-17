@@ -2,6 +2,11 @@ import pandas as pd
 from arboreto.utils import load_tf_names
 from arboreto.algo import grnboost2
 
+# NOTE (JUL17)
+# Although the output file is named GENIE3_linkList, we used GRNBoost2 (from Arboreto) to generate the network,
+# following SCENIC’s standard input file naming convention.
+
+
 n = 1
 tf_path = "int/1.1_inputTFs.txt"
 ex_path = "int/1.1_exprMatrix_filtered_t.txt"
