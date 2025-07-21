@@ -10,6 +10,15 @@ FOX is a highly **modular** and **flexible** methodology for analyzing and compa
 
 [📘 Website Documentation](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/) • [🦊 Quick examples](https://howard-fox-lab.github.io/FOX-Functional-OMIC-eXploration/Test_group_final.html) 
 
+# Data Citations:
+
+- Quick examples data is taken from the Seurat website (PBMC3K):  
+  [PBMC3K Dataset from 10x Genomics](https://cf.10xgenomics.com/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz)
+
+- Supplemental information data is from:  
+  [Human and mouse single-nucleus transcriptomics reveal TREM2-dependent and TREM2-independent cellular responses in Alzheimer’s disease](https://www.nature.com/articles/s41591-019-0695-9)
+
+
 To see examples of formatted data, see data/
 
 <p align="center">
