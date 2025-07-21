@@ -1,6 +1,5 @@
 source('../scenic_process.R')
 load('../pbmc_named.RData')#QA/QC corrected version ehe
-# fseurat_scenicV2unction(obj_filename, cluster_on, session_name, cores, topWhat) {
 load('m.RData')# its the preloaded human database.
 
 scenicOptions <- initializeScenic(org="hgnc", dbDir="cisTarget_databases", nCores=18)
