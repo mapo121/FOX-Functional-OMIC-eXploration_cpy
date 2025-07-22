@@ -2,7 +2,7 @@
 ---
 ![alt text](docs/image_cover.jpg)
 
-Let me know if you need further customization or changes! Email: mapostol@unmc.edu
+Let me know if you need further customization or changes! Email: mapostol@unmc.edu or mapo3126@gmail.com
 
 # F🦊X: **F**unctional OMIC  e**X**ploration of Gene Regulatory Networks
 
